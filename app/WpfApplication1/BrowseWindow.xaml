@@ -1,0 +1,77 @@
+﻿<controls:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:m="http://metrowpf.codeplex.com/controls"
+        xmlns:local="clr-namespace:WpfApplication1" x:Class="WpfApplication1.BrowseWindow"
+        Title="BrowseWindow" Height="380" Width="429.912" Loaded="MetroWindow_Loaded" BorderBrush="{StaticResource PrimaryColor}" BorderThickness="3"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:FoodProjectDataSet x:Key="foodProjectDataSet"/>
+        <CollectionViewSource x:Key="recipeViewSource" Source="{Binding Recipe, Source={StaticResource foodProjectDataSet}}"/>
+        <CollectionViewSource x:Key="cuisineViewSource" Source="{Binding Cuisine, Source={StaticResource foodProjectDataSet}}"/>
+        <CollectionViewSource x:Key="categoryViewSource" Source="{Binding Category, Source={StaticResource foodProjectDataSet}}"/>
+        <CollectionViewSource x:Key="categoryIngredientViewSource" Source="{Binding FK__Ingredien__categ__145C0A3F, Source={StaticResource categoryViewSource}}"/>
+        <Style TargetType="{x:Type ListBox}" x:Key="ListBoxStyle">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <TabControl x:Name="BrowseTabControl" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <TabItem Header="Uppskriftir">
+                <Grid Background="{StaticResource SecondaryColor}" Height="300">
+                    <StackPanel Orientation="Vertical" DataContext="{StaticResource recipeViewSource}">
+                        <ListView x:Name="recipeListView" SelectionMode="Single" SelectedValuePath="rid" ItemsSource="{Binding}" Height="252" DisplayMemberPath="name" Style="{StaticResource ListBoxStyle}" MouseDoubleClick="recipeListBox_MouseDoubleClick"/>
+                        <Button x:Name="NewRecipe" Click="NewRecipe_Click" Content="Skrá Nýja Uppsskrift" Height="50" VerticalAlignment="Bottom" Style="{StaticResource MenuButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Flokkar">
+                <Grid Background="#FFE5E5E5" Height="300">
+                    <StackPanel Orientation="Vertical" DataContext="{StaticResource cuisineViewSource}">
+                        <!--<ListBox x:Name="cuisineListBox" DisplayMemberPath="name" Height="251" ItemsSource="{Binding}" SelectedValuePath="cuid" Style="{StaticResource ListBoxStyle}"/>-->
+                        <ListView x:Name="nameListBox" Height="251" VerticalAlignment="Top" ItemsSource="{Binding}" DisplayMemberPath="name" Style="{StaticResource ListBoxStyle}">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Eyða" Click="DeleteCuisine_Click">
+                                        <MenuItem.Icon>
+                                            <Image Source="C:\Users\HlynurÖrn\Documents\Lokaverkefni\RecipeImage\smily.jpg"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
+                        <Button x:Name="NewCuisine" Click="NewCuisine_Click" Content="Skrá Nýjan Flokk" Height="50" VerticalAlignment="Bottom" Style="{StaticResource MenuButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Hráefni">
+                <Grid Background="#FFE5E5E5" Height="300">
+                    <StackPanel Orientation="Vertical" DataContext="{StaticResource categoryIngredientViewSource}">
+                        <ComboBox x:Name="nameComboBox" DataContext="{StaticResource categoryViewSource}" DisplayMemberPath="name" HorizontalAlignment="Left" Height="Auto" ItemsSource="{Binding}" VerticalAlignment="Top" Width="389">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel/>
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                        <ListView x:Name="ingredientListBox" DisplayMemberPath="name" Height="225" ItemsSource="{Binding}" SelectedValuePath="name" Style="{StaticResource ListBoxStyle}">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Eyða" Click="DeleteIngredient_Click">
+                                        <MenuItem.Icon>
+                                            <Image Source="C:\Users\HlynurÖrn\Documents\Lokaverkefni\RecipeImage\smily.jpg"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
+                        <Button x:Name="NewIngredient" Click="NewIngredient_Click" Content="Skrá Nýtt Hráefni" Height="50" VerticalAlignment="Bottom" Style="{StaticResource MenuButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
+</controls:MetroWindow>

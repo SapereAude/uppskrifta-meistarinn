@@ -1,0 +1,133 @@
+﻿<controls:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:WpfApplication1"
+        xmlns:toolkit ="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d" 
+        x:Class="WpfApplication1.MainWindow"
+        Style="{StaticResource PageStyle}"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+
+        <local:DoubleUp x:Key="DoubleUp" />
+        <local:DefaultImageAndResize x:Key="DefaultImageAndResize"/>
+        <local:FoodProjectDataSet x:Key="foodProjectDataSet"/>
+        <CollectionViewSource x:Key="cuisineInfoViewSource" Source="{Binding CuisineInfo, Source={StaticResource foodProjectDataSet}}"/>
+        <CollectionViewSource x:Key="mainRecipeDetailsViewSource" Source="{Binding MainRecipeDetails, Source={StaticResource foodProjectDataSet}}"/>
+        <CollectionViewSource x:Key="recipeViewSource" Source="{Binding Recipe, Source={StaticResource foodProjectDataSet}}"/>
+    </Window.Resources>
+    <DockPanel LastChildFill="True" DataContext="{StaticResource mainRecipeDetailsViewSource}">
+
+        <!--LeftSideBarMenu-->
+        <Grid Background="#f7d842" Width="200" x:Name="SideNav" HorizontalAlignment="Left" Opacity="0.8" DockPanel.Dock="Left">
+            <StackPanel Orientation="Vertical">
+                <Grid Height="100" >
+                    <Viewbox Height="80" VerticalAlignment="Center" Margin="0,10">
+                        <Path Width="49.0443" Height="59.5176" Stretch="Uniform" Fill="Yellow" Data="F1 M 8.76831,-1.52588e-005C 26.3907,1.36653 24.6913,15.7188 24.6913,15.7188C 9.638,17.1719 8.76831,-1.52588e-005 8.76831,-1.52588e-005 Z M 24.5286,55.8535C 22.9583,58.0775 20.3358,59.5176 17.3945,59.5176C 14.9948,59.5176 12.6458,58.3919 11.0612,56.8106C 7.82022,53.2735 3.61719,45.3679 3.61719,45.3679C 1.26288,40.584 0,36.8867 0,33.1452C 0,25.1771 6.4505,18.2695 14.4296,18.2695C 18.3672,18.2695 21.9167,19.8451 24.526,22.3919C 27.1341,19.8451 30.6809,18.2695 34.6145,18.2695C 42.5962,18.2695 49.0443,25.1784 49.0443,33.1452C 49.0443,36.8855 47.7838,40.584 45.4296,45.3679C 45.4296,45.3679 41.2278,53.2721 37.9869,56.8106C 36.4023,58.3932 34.0494,59.5176 31.651,59.5176C 28.7134,59.5163 26.0962,58.0775 24.5286,55.8535 Z "/>
+                    </Viewbox>
+                </Grid>
+                <Button x:Name="btnHome" IsEnabled="False" Content="Heim" Style="{DynamicResource MenuButtonStyle}"/>
+                <Button x:Name="btnAllRecipes" Content="_Allar Uppskriftir" Click="btnAllRecipes_Click" Style="{DynamicResource MenuButtonStyle}"/>
+                <Expander Header="Nýskrá">
+                    <StackPanel Orientation="Vertical">
+                        <Button x:Name="btnNewRecipe" Content="_Ný Uppskrift" Click="btnNewRecipe_Click" Style="{DynamicResource MenuButtonStyle}"/>
+                        <Button x:Name="btnNewCuisine" Content="N_ýr Flokkur" Click="btnNewCuisine_Click" Style="{DynamicResource MenuButtonStyle}"/>
+                        <Button x:Name="btnNewIngredient" Content="Ný_tt Hráefni" Click="btnNewIngredient_Click" Style="{DynamicResource MenuButtonStyle}"/>
+                    </StackPanel>
+                </Expander>
+                <Expander Header="Skoða">
+                    <StackPanel Orientation="Vertical">
+                        <Button x:Name="btnBrowseRecipe" Content="_Uppskriftir" Click="btnBrowseRecipe_Click" Style="{DynamicResource MenuButtonStyle}"/>
+                        <Button x:Name="btnBrowseCuisine" Content="_Flokka" Click="btnBrowseCuisine_Click" Style="{DynamicResource MenuButtonStyle}"/>
+                        <Button x:Name="btnBrowseIngredient" Content="_Hráefni" Click="btnBrowseIngredient_Click" Style="{DynamicResource MenuButtonStyle}"/>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+            <!--SETJA INN Í MENU-->
+        </Grid>
+        <Grid DockPanel.Dock="Top">
+            <Border Margin="322,10,349,10" VerticalAlignment="Bottom" Style="{StaticResource SelectedRecipeBorderStyle}">
+                <TextBlock Height="67" Text="Uppskrift Dagsins" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
+        </Grid>
+        <Grid x:Name="MainBodyGrid" Style="{StaticResource MainBodyGridStyle}">
+            <!--Recipe Title and Rating-->
+            <Grid x:Name="RecipeBoard" Style="{StaticResource GridRecipeStyle}">
+                <Border Style="{StaticResource SelectedRecipeBorderStyle}">
+                    <Grid>
+                        <Grid x:Name="TitleGrid"  HorizontalAlignment="Left" Margin="266,10,0,0" VerticalAlignment="Top" Height="176" Width="426">
+                            <TextBlock x:Name="RecipeName" DataContext="{StaticResource recipeViewSource}" Text="{Binding name}" HorizontalAlignment="Left" Margin="30,29,0,119" VerticalAlignment="Center" Height="28" Width="Auto" FontSize="22" FontWeight="SemiBold"/>
+
+                            <local:RatingControl Width="200" Height="25" DataContext="{StaticResource recipeViewSource}" RatingValue="{Binding rating}" Margin="10,62,216,89" IsEnabled="False"/>
+                            <Grid x:Name="CuisineGrid" HorizontalAlignment="Left" Height="Auto" Margin="10,92,0,0" VerticalAlignment="Top" Width="Auto">
+                                <ListBox x:Name="cuisineList" ItemsSource="{Binding Source={StaticResource cuisineInfoViewSource}}" Style="{StaticResource CuisineListBoxStyle}" >
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Label x:Name="cuisineLabel" Content="{Binding Cuisine}" Foreground="Black" Style="{StaticResource CuisineLabelStyle}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel>
+                                            </WrapPanel>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </Grid>
+                        </Grid>
+
+                        <!--Recipe Description-->
+                        <Grid x:Name="DescriptionGrid" Margin="320,191,189,10">
+                            <TextBlock Text="Aðferð" FontSize="18" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="41" Width="99" />
+                            <Grid x:Name="SubDescriptionGrid" HorizontalAlignment="Left" Margin="0,51,-4,0" VerticalAlignment="Top" Height="238" Width="314">
+                                <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible" Margin="0,0,27,0">
+                                    <TextBlock x:Name="DescriptionTextBlock" TextWrapping="Wrap" HorizontalAlignment="Right" DataContext="{StaticResource recipeViewSource}" Text="{Binding description}" Width="267" IsEnabled="False"/>
+                                </ScrollViewer>
+                            </Grid>
+                        </Grid>
+                        <!--RightSideBar-->
+                        <Grid x:Name="RightSideBarGrid" HorizontalAlignment="Left" Height="466" Margin="15,10,0,0" VerticalAlignment="Top" Width="246"  >
+                            <!--Hráefni í Uppskrift-->
+                            <Grid x:Name="IngrediantsGrid" Margin="10,202,10,-10">
+                                <Image x:Name="RecipeImage" DataContext="{StaticResource recipeViewSource}" Source="{Binding image_url, Converter={StaticResource DefaultImageAndResize}}" Height="Auto" Margin="0,-188,0,301"/>
+                                <ScrollViewer Style="{StaticResource IngredientScrollViewer}">
+                                    <DataGrid x:Name="mainRecipeDetailsDataGArid" Style="{StaticResource IngredientsGridStyle}" ItemsSource="{Binding}"  HorizontalAlignment="Left" Width="216">
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn x:Name="ingredientsColumn" Width="3*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Label Content="{Binding Ingredients}" Style="{StaticResource DataGridLabelStyle}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn x:Name="quantityColumn" Width="2*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Label Content="{Binding Quantity, Converter={StaticResource DoubleUp}}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Style="{StaticResource DataGridLabelStyle}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn x:Name="unitsColumn" Width="*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Label Content="{Binding Units}" Style="{StaticResource DataGridLabelStyle}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </ScrollViewer>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</controls:MetroWindow>

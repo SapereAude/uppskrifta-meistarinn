@@ -1,0 +1,21 @@
+﻿<controls:MetroWindow x:Class="WpfApplication1.NewCuisine"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:watermark="clr-namespace:Watermark"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="NewCuisine" Height="191" Width="449"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Style="{StaticResource SecondaryWindowStyle}" Loaded="MetroWindow_Loaded" KeyDown="MetroWindow_KeyDown">
+    <Grid>
+        <Label Content="Nafn:" HorizontalAlignment="Left" Margin="84,47,0,0" VerticalAlignment="Top"/>
+        <!--<TextBox x:Name="txtName" HorizontalAlignment="Left" Height="23" Margin="127,49,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" KeyDown="txtName_KeyDown"/>-->
+        <AdornerDecorator Margin="127,47,101,83">
+            <TextBox x:Name="txtName" KeyDown="txtName_KeyDown" Margin="10,4,0,0">
+                <watermark:WatermarkService.Watermark>
+                    <TextBlock>Heitið á flokknum...</TextBlock>
+                </watermark:WatermarkService.Watermark>
+            </TextBox>
+        </AdornerDecorator>
+        <Button x:Name="btnCreate" Content="Skrá" HorizontalAlignment="Left" Margin="285,90,0,0" VerticalAlignment="Top" Width="75" Click="btnCreate_Click"/>
+
+    </Grid>
+</controls:MetroWindow>

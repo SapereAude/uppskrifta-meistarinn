@@ -1,0 +1,402 @@
+﻿<Application
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" xmlns:Custom1="http://metro.mahapps.com/winfx/xaml/controls" x:Class="WpfApplication1.App"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Yellow.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--<controls:MetroWindow.WindowCommands>
+                <controls:WindowCommands>
+                    <Button Content="About" />
+                    <Button>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="20" Height="20" Fill="Black"/>
+                            <TextBlock Text="HallókallóBimbó" />
+                        </StackPanel>
+                    </Button>
+                </controls:WindowCommands>
+            </controls:MetroWindow.WindowCommands>-->
+
+            <!--Misc. ColorSchemes-->
+            <SolidColorBrush x:Key="Recipe.Static.Background" Color="Beige"/>
+            <SolidColorBrush x:Key="Recipe.Static.Foreground" Color="#000000"/>
+            <!--<SolidColorBrush x:Key="RecipePaper" Color="AntiqueWhite"/>-->
+            <SolidColorBrush x:Key="PrimaryColor" Color="#fee538"/>
+            <SolidColorBrush x:Key="SecondaryColor" Color="#fcfd97"/>
+            
+            <!--Button colorSchemes-->
+            <SolidColorBrush x:Key="Button.Static.Background" Color="#fcfd97"/>
+            <SolidColorBrush x:Key="Button.Static.Border" Color="#fcfd97"/>
+            <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#fcfd22"/>
+            <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#fcfd22"/>
+            <SolidColorBrush x:Key="Button.Pressed.Background" Color="#fcaa00"/>
+            <SolidColorBrush x:Key="Button.Pressed.Border" Color="#fcaa00"/>
+            <SolidColorBrush x:Key="Button.Disabled.Background" Color="#fcfd22"/>
+            <SolidColorBrush x:Key="Button.Disabled.Border" Color="#fcfd22"/>
+            <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#000000"/>
+
+            <!--Style on PrimaryWindows-->
+            <Style x:Key="PageStyle">
+                <Setter Property="FrameworkElement.Width" Value="1220" />
+                <Setter Property="FrameworkElement.Height" Value="700" />
+                <Setter Property="Window.Icon" Value="chefHat.ico"/>
+                <Setter Property="Window.BorderBrush" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="Window.BorderThickness" Value="3" />
+                <Setter Property="Window.Margin" Value="3" />
+            </Style>
+            
+            <!--Style on SecondaryWindows-->
+            <Style x:Key="SecondaryWindowStyle" TargetType="Window">
+                <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="BorderThickness" Value="3" />
+            </Style>
+
+            <!--MainBodyGrid style-->
+            <Style x:Key="MainBodyGridStyle" TargetType="{x:Type Grid}">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Height" Value="587"/>
+                <Setter Property="Width" Value="950" />
+            </Style>
+
+            <!--Border arround SelectedRecipeGrid-->
+            <Style TargetType="Border" x:Key="SelectedRecipeBorderStyle">
+                <Setter Property="CornerRadius" Value="6"/>
+                <Setter Property="BorderBrush" Value="Yellow"/>
+                <Setter Property="BorderThickness" Value="3" />
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Height" Value="Auto" />
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Margin" Value="0" />
+            </Style>
+            
+            <!--Grid under SelectedRecipe-->
+            <Style x:Key="GridRecipeStyle" TargetType="{x:Type Grid}">
+                <Setter Property="Background" Value="{StaticResource Recipe.Static.Background}"/>
+                <Setter Property="Height" Value="500"/>
+                <Setter Property="Width" Value="800" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="10"
+            				Direction="10"
+            				Color="AntiqueWhite"
+            				RenderingBias="Quality"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--Style on a single datagridcell inside ingredientsDataGrid-->
+            <Style x:Key="{x:Type DataGridCell}" TargetType="{x:Type DataGridCell}" >
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Foreground" Value="{StaticResource Recipe.Static.Foreground}"/>
+                        <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--Style for ingredients DataGrid-->
+            <Style TargetType="{x:Type DataGrid}" x:Key="IngredientsGridStyle">
+                <Setter Property="RowBackground" Value="#fcfd97" />
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="HeadersVisibility" Value="None"/>
+                <Setter Property="HorizontalGridLinesBrush" Value="Black"/>
+                <Setter Property="VerticalGridLinesBrush" Value="{x:Null}"/>
+                <Setter Property="GridLinesVisibility" Value="None"/>
+                <Setter Property="BorderBrush" Value="#fcfd97"/>
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="AlternatingRowBackground" Value="{StaticResource Recipe.Static.Background}" />
+                <Setter Property="AlternationCount" Value="1" />
+                <Setter Property="Background" Value="{StaticResource Recipe.Static.Background}"/>
+                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="RowDetailsVisibilityMode" Value="Visible" />
+                <Setter Property="AutoGenerateColumns" Value="False" />
+                <Setter Property="SelectionUnit" Value="Cell" />
+                <Setter Property="Height" Value="Auto" />
+                <Setter Property="BorderThickness" Value="2" />
+            </Style>
+
+            <!--PrintIngredientGrdiStyle-->
+            <Style TargetType="DataGrid" x:Key="PrintIngredientsGridStyle">
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="HeadersVisibility" Value="None"/>
+                <Setter Property="HorizontalGridLinesBrush" Value="Black"/>
+                <Setter Property="VerticalGridLinesBrush" Value="{x:Null}"/>
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="RowDetailsVisibilityMode" Value="Visible" />
+                <Setter Property="AutoGenerateColumns" Value="False" />
+                <Setter Property="SelectionUnit" Value="Cell" />
+                <Setter Property="Height" Value="Auto" />
+            </Style>
+            
+            <!--Style on Label inside IngredientsDataGrid-->
+            <Style x:Key="DataGridLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                <Setter Property="VerticalContentAlignment" Value="Top" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Label">
+                            <Border>
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  RecognizesAccessKey="True" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--CuisineLabelStyle-->
+            <Style TargetType="Label" x:Key="CuisineLabelStyle">
+                <Setter Property="Background" Value="{StaticResource Recipe.Static.Background}"/>
+                <Setter Property="Foreground" Value="{StaticResource Recipe.Static.Foreground}" /><!--This ins't working?? Not rendering foreground color-->
+                <Setter Property="BorderThickness" Value="4" />
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+
+            <!--ListBox CuisineTags Style, when displaying in recipe, not enabled-->
+            <Style TargetType="{x:Type ListBox}" x:Key="CuisineListBoxStyle">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Background" Value="{StaticResource Recipe.Static.Background}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Recipe.Static.Foreground}"/>
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background" Value="{StaticResource Recipe.Static.Background}" />
+                <Setter Property="Foreground" Value="{StaticResource Recipe.Static.Foreground}"/>
+                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="SelectionMode" Value="Multiple" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <Border BorderBrush="{TemplateBinding Border.BorderBrush}" BorderThickness="{TemplateBinding Border.BorderThickness}" x:Name="Bd" Background="{TemplateBinding Panel.Background}" SnapsToDevicePixels="True" Padding="0">
+                                <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}">
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            <!--Alternative CuisineTags Style, in editRecipe, enabled-->
+            <Style TargetType="{x:Type ListBox}" x:Key="AltCuisineListBoxStyle">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="{StaticResource Recipe.Static.Foreground}"/>
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Name="Border"
+                                                Padding="2"
+                                                SnapsToDevicePixels="true">
+                                            <ContentPresenter />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="true">
+                                                <Setter TargetName="Border" Property="Background" Value="Yellow"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="IsEnabled" Value="True"/>
+                <Setter Property="SelectionMode" Value="Single" />
+                <Setter Property="BorderBrush" Value="#fcfd97"/>
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+            
+            <!--MenuButtonStyle-->
+            <Style x:Key="FocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="MenuButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Padding" Value="1"/>
+                <Setter Property="Height" Value="50"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                                <!--</WrapPanel>-->
+                                <!--<WrapPanel>
+                                    <Viewbox>
+                                        <Path Name="KnifeFork" Width="7.755" Height="11.415" HorizontalAlignment="Left" Stretch="Uniform" Fill="Black" Data="F1 M 35.2943,127.137L 35.9844,65.2384C 25.1888,58.0874 32,21.7657 33.1523,14.7227C 34.2943,7.6732 39.3268,0.0326691 42.0495,0.056015C 44.7617,0.0769196 48.6367,0.744827 48.5873,6.70576L 47.5782,127.242C 47.5495,130.637 44.7813,133.359 41.3842,133.332C 37.9922,133.303 35.2657,130.538 35.2943,127.137 Z M 6.51813,126.899L 7.34106,49.2553C 2.92316,49.2201 0.75,43.9571 0,40.1499L 2.67438,1.52588e-005L 6.29425,32.4077L 9.68481,0.0560455L 13.2995,32.4663L 17.4648,0.121231L 20.306,32.5249L 24.4661,0.179794L 26.4623,40.3712C 25.6588,44.1655 23.7096,49.392 19.2798,49.3555L 18.8099,127C 18.7813,130.397 16.0014,133.12 12.6107,133.091C 9.21866,133.063 6.49078,130.296 6.51813,126.899 Z "/>
+                                    </Viewbox>-->
+                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsDefaulted" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                                    <!--<Setter TargetName="KnifeFork" Property="Fill" Value="Blue" />-->
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--MenuButtonStyle-->
+            
+            <Style x:Key="FilterMenuButtonStyle" TargetType="Button">
+                <Setter Property="Height" Value="50"/>
+                <Setter Property="Width" Value="250" />
+            </Style>
+
+            <!--DataGridScrollViewerStyle-->
+            <Style TargetType="ScrollViewer" x:Key="IngredientScrollViewer">
+                <Setter Property="Height" Value="Auto" />
+                <Setter Property="MaxHeight" Value="250" />
+                
+            </Style>
+            <!--DataGridIngreStyle-->
+            <ControlTemplate x:Key="DataGridIngreStyle" TargetType="{x:Type DataGrid}">
+                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                    <ScrollViewer x:Name="DG_ScrollViewer" Focusable="False">
+                        <ScrollViewer.Template>
+                            <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                <Grid>
+                                    <Button Command="ApplicationCommands.SelectAll" Focusable="False" Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}}">
+                                        <Button.Visibility>
+                                            <Binding Path="HeadersVisibility" RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}">
+                                                <Binding.ConverterParameter>
+                                                    <DataGridHeadersVisibility>All</DataGridHeadersVisibility>
+                                                </Binding.ConverterParameter>
+                                            </Binding>
+                                        </Button.Visibility>
+                                    </Button>
+                                    <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1">
+                                        <DataGridColumnHeadersPresenter.Visibility>
+                                            <Binding Path="HeadersVisibility" RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}">
+                                                <Binding.ConverterParameter>
+                                                    <DataGridHeadersVisibility>Column</DataGridHeadersVisibility>
+                                                </Binding.ConverterParameter>
+                                            </Binding>
+                                        </DataGridColumnHeadersPresenter.Visibility>
+                                    </DataGridColumnHeadersPresenter>
+                                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" Grid.ColumnSpan="2" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Grid.Row="1"/>
+                                    <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Grid.Row="1" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                    <Grid Grid.Column="1" Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}}"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                    </Grid>
+                                </Grid>
+                            </ControlTemplate>
+                        </ScrollViewer.Template>
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </ScrollViewer>
+                </Border>
+            </ControlTemplate>
+            <Style x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}" TargetType="{x:Type Button}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Rectangle x:Name="Border" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" SnapsToDevicePixels="True"/>
+                                <Polygon x:Name="Arrow" Fill="Black" HorizontalAlignment="Right" Margin="8,8,3,3" Opacity="0.15" Points="0,10 10,10 10,0" Stretch="Uniform" VerticalAlignment="Bottom"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Stroke" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Fill" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Visibility" TargetName="Arrow" Value="Collapsed"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            <!--ListBoxStyle In ViewAllRecipes-->
+            <Style x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
+                <Setter Property="SnapsToDevicePixels" Value="true"/>
+                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border Name="Border" Padding="2" SnapsToDevicePixels="true">
+                                <ContentPresenter />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{StaticResource Recipe.Static.Foreground}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

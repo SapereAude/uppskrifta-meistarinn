@@ -1,0 +1,43 @@
+﻿<controls:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WpfApplication1" 
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:watermark="clr-namespace:Watermark"
+        x:Class="WpfApplication1.NewIngritiant"
+        Title="Nýtt Hráefni" Height="300" Width="300" Loaded="Window_Loaded"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Style="{StaticResource SecondaryWindowStyle}">
+    <Window.Resources>
+        <local:FoodProjectDataSet x:Key="foodProjectDataSet"/>
+        <CollectionViewSource x:Key="categoryViewSource" Source="{Binding Category, Source={StaticResource foodProjectDataSet}}"/>
+    </Window.Resources>
+
+    <!--New Ingredient Window-->
+    <Grid DataContext="{StaticResource categoryViewSource}">
+
+        <!--Input name of new ingredient-->
+        <Label Content="Flokkur:" HorizontalAlignment="Left" Margin="31,126,0,0" VerticalAlignment="Top"/>
+        <!--<TextBox x:Name="txtName" HorizontalAlignment="Left" Height="23" Margin="87,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161" KeyDown="txtName_KeyDown"/>-->
+        <AdornerDecorator Margin="87,74,40,165">
+            <TextBox x:Name="txtName" KeyDown="txtName_KeyDown" Margin="10,4,0,0">
+                <watermark:WatermarkService.Watermark>
+                    <TextBlock>Nafnið á hráefninu...</TextBlock>
+                </watermark:WatermarkService.Watermark>
+            </TextBox>
+        </AdornerDecorator>
+        <!--Categorized food groups in combobox-->
+        <Label Content="Nafn:" HorizontalAlignment="Left" Margin="44,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.284,0.356"/>
+        <ComboBox x:Name="nameComboBox" Width="161" VerticalAlignment="Center" Margin="87,126,0,113" ItemsSource="{Binding}" Height="26" HorizontalAlignment="Left" DisplayMemberPath="name">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
+
+        <!--Add new ingredient to DB-->
+        <Button x:Name="btnAdd" Content="Skrá" HorizontalAlignment="Left" Margin="207,239,0,0" VerticalAlignment="Top" Width="75" Height="Auto" Click="btnAdd_Click" KeyDown="btnAdd_KeyDown"/>
+
+        <Label Visibility="Hidden" x:Name="cidLabel" Content="{Binding cid}" HorizontalAlignment="Left" Margin="10,10,0,249" Grid.Row="0" VerticalAlignment="Center"/>
+    </Grid>
+</controls:MetroWindow>
